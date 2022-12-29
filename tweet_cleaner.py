@@ -6,12 +6,6 @@ import emoji
 import string
 import re
 
-"""test tweet: @mrslorijg New name for @LeCingola.  I’m going to Post.  But want to be here.  They made me get a new Twittter.
-Its real!! I i got my ethereum!! @And23569173 @k_unsolved @yvonnea1220 @OregonMichael1 @DemirovicRafet @DINKA2025 @EmreKacar00 @jewel_lly @milodibartolo @presi_twittter @ZaheerA98644811 @whiskey_420_ @Nicknameyoungk3 @Bexto404 https://t.co/3KYartQcoW
-@obiiwys as I no get money, make I just come twittter dey vex😭😭🤣😡😡
-Woow unprecedented generosity! Dont waste time! @HouseFromCrypto @StylinMotives @HorsesHeadz @DeWinnersClub @MehediH85779411 @MihaiSe49347902 @Dreasy81 @Yusuf001ys @jto2223 @AbraHamAlABid2 @CryptoD36082724 @Chochelafarm @presi_twittter @Selcuk_CSLife https://t.co/6in4lGSkVy
-@mikeduncan I love magic Twittter juxtaposition. https://t.co/8T1ntXav0I
-"""
 class cleaner:
 
     stopwords = stopwords.words('english')
