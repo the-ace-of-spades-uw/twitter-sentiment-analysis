@@ -9,25 +9,26 @@ class storage:
     EXPORTSDIR = os.path.join(DIR,"exports")
 
     def __init__ (self):
-        #id refers to tweet id, will be stroed as index for easy tweet look up
-        #engangment score is a crude measurement of a tweets engangement, sum of number of likes, replies, retweets, and quotes
-        self.baseDataFrame = pd.DataFrame({"timeCreated":[],"text":[], "cleanText":[], "polarity": [], "likeCount":[],"replyCount":[],"retweetCount":[],"quoteCount":[],"engagementScore":[]})
+        self.baseDataFrame = None
     
     def add_Twitter_Data (self,twitterResponse):
         print("***Porting Tweets***")
-        for tweet in twitterResponse:
-            time = tweet.created_at
-            text = tweet.text
-            cleanText = tc.cleaner.clean_Tweet_Simple(text)
-            polarity = sa.sentimentAnalyzer.get_Polarity(cleanText)
-            likes = tweet.public_metrics["like_count"]
-            replies = tweet.public_metrics["reply_count"]
-            retweets = tweet.public_metrics["retweet_count"]
-            quotes = tweet.public_metrics["quote_count"]
-            engagementScore = likes + replies + retweets + quotes 
-            
-            self.baseDataFrame.loc[tweet.id] = [time,text,cleanText,polarity,likes,replies,retweets,quotes,engagementScore]
+        self.baseDataFrame = pd.concat([pd.DataFrame(page.data) for page in twitterResponse])
+        self.baseDataFrame["cleaned_text"] = self.baseDataFrame["text"].apply(tc.cleaner.clean_Tweet_Simple)
+        self.baseDataFrame["polarity"] = self.baseDataFrame["cleaned_text"].apply(sa.sentimentAnalyzer.get_Polarity)
+        self.baseDataFrame["engagement_score"] = self.baseDataFrame["public_metrics"].apply(lambda x: sum(dict.values(x)))
+        self.baseDataFrame["created_at"] = self.baseDataFrame["created_at"].dt.tz_localize(None)
+        self.baseDataFrame.set_index('id',drop=False,inplace=True)
         print("***Port Completed***")
     
-    def export_to_CSV (self):
-        pass
+    def export_to_CSV (self,tittle):
+        self.baseDataFrame.to_csv(os.path.join(storage.EXPORTSDIR,tittle + ".csv"))
+        print("data exported to csv")
+    
+    def export_to_Excel (self,tittle):
+        self.baseDataFrame.to_excel(os.path.join(storage.EXPORTSDIR,tittle + ".xlsx"))
+        print("data exported to excel file")
+
+    def export_to_JSON (self,tittle):
+        self.baseDataFrame.to_json(os.path.join(storage.EXPORTSDIR,tittle + ".json"))
+        print("data exported to JSON")

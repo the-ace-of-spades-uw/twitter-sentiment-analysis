@@ -1,15 +1,15 @@
 import twitter_grabber as tg
 import storage_mangement as sm
-
+import time 
 def main():
-    
-    grabber = tg.grabber(tg.APIKEY,tg.APIKEYSECRET,tg.BEARERTOKEN)
+    t1 = time.perf_counter()
+    grabber = tg.grabber(tg.BEARERTOKEN)
     grabber.initialize_Client()
-    tweets = grabber.search_Recent_Tweets("(elon musk) lang:en -is:retweet -is:reply",100,None,None,None,['public_metrics','created_at'],None,None)
-    store = sm.storage()
-    store.add_Twitter_Data(tweets)
-    print(store.baseDataFrame)
-    
+    tweets = grabber.search_Recent_Tweets("(elon musk) lang:en -is:retweet -is:reply",None,None,None,['public_metrics','created_at'],None,10,1)
+    storage = sm.storage()
+    print(storage.baseDataFrame)
+    t2 = time.perf_counter()
+    print(t2-t1)
     
 if __name__ == "__main__":
     main()

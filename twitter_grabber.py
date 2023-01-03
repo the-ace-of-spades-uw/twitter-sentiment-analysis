@@ -1,15 +1,15 @@
 import tweepy
 
 # Twitter API authentication keys
+BEARERTOKEN = "AAAAAAAAAAAAAAAAAAAAAIURkAEAAAAAlAOjxJ0i7N0TupV1XWuhuUesqUc%3DrvqvEgIQ31ByFgfZKieAa4pBzoBXY0c5rVUblKJSTtyxRyVsuh"
 APIKEY = ""
 APIKEYSECRET = ""
-BEARERTOKEN = ""
 ACCESSTOKEN = ""
 ACCESSTOKENSECRET = ""
 # class for grabbing tweets from twitter
 class grabber:
 
-    def __init__ (self,apiKey,apiSecrt,bearerToken,accToken=None,accSecret=None):
+    def __init__ (self,bearerToken,apiKey=None,apiSecrt=None,accToken=None,accSecret=None):
         self.apiKey = apiKey
         self.apiSecrt = apiSecrt
         self.bearerToken = bearerToken
@@ -30,14 +30,14 @@ class grabber:
             print(e)
     
 
-    def search_Recent_Tweets (self,query,numTweets,startTime,endTime,sortOrder,tweetFields,expansions,maxResults):
+    def search_Recent_Tweets (self,query,startTime,endTime,sortOrder,tweetFields,expansions,maxResults,numpages):
         """
         ***pre condition: initialize_Client has been called***
         (self,str,int,str,str,str,list,list,int) -> response
-        search twitter for tweets matching query up to numTweets
+        search twitter for tweets matching query up to specfied max results per page
         """
         try:
-            response = tweepy.Paginator(self.client.search_recent_tweets,query,start_time=startTime,end_time=endTime,sort_order=sortOrder,tweet_fields=tweetFields,expansions=expansions,max_results=maxResults).flatten(limit=numTweets)
+            response = tweepy.Paginator(self.client.search_recent_tweets,query,start_time=startTime,end_time=endTime,sort_order=sortOrder,tweet_fields=tweetFields,expansions=expansions,max_results=maxResults,limit=numpages)
             return response
 
         except Exception as e:
