@@ -1,7 +1,7 @@
 import tweepy
 
 # Twitter API authentication keys
-BEARERTOKEN = "AAAAAAAAAAAAAAAAAAAAAIURkAEAAAAAlAOjxJ0i7N0TupV1XWuhuUesqUc%3DrvqvEgIQ31ByFgfZKieAa4pBzoBXY0c5rVUblKJSTtyxRyVsuh"
+BEARERTOKEN = ""
 APIKEY = ""
 APIKEYSECRET = ""
 ACCESSTOKEN = ""
